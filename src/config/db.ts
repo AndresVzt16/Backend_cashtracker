@@ -1,0 +1,16 @@
+import { Sequelize } from "sequelize-typescript";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// Aseguramos al compilador que DATABASE_URL está definida
+export const db = new Sequelize(process.env.DATABASE_URL!, {
+  models:[__dirname + '/../models/**/*'],
+  logging:false,
+  dialectOptions: {
+    ssl: {
+      require: false,
+      rejectUnauthorized: false,
+    },
+  },
+});
