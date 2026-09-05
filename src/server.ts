@@ -4,6 +4,7 @@ import colors from "colors";
 import { db } from "./config/db";
 import budgetRouter from "./routes/budgetRoutes";
 import expenseRouter from "./routes/expenseRoutes";
+import authRouter from './routes/authRoutes'
 
 //conexion a base de datos
 async function connectDB() {
@@ -30,6 +31,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/api/v1/budgets", budgetRouter);
-app.use("/api/v1/expenses", expenseRouter);
+app.use("/api/v1/budgets", expenseRouter);
+app.use("/api/v1/auth", authRouter);
+
 
 export default app;

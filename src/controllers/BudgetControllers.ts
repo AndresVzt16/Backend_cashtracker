@@ -8,6 +8,7 @@ export class BudgetController {
     try {
       const budgets = await Budget.findAll({
         order: [["createdAt", "DESC"]],
+        where: { userId: req.User.id },
       });
       res.json(budgets);
     } catch (error) {
@@ -16,8 +17,7 @@ export class BudgetController {
   };
   static create = async (req: Request, res: Response) => {
     try {
-      const budget = new Budget(req.body);
-      await budget.save();
+      const budget = await Budget.create({ ...req.body, userId: req.User.id });
       res.status(201).json("Presupuesto creado correctamente");
     } catch (error) {
       console.log(error);
@@ -26,14 +26,14 @@ export class BudgetController {
         .json({ error: "Ocurrio un error al generar el presupuesto." });
     }
   };
-  static getById = async (req: Request<BudgetParams>, res: Response) => {
+  static getById = async (req: Request, res: Response) => {
     res.json(req.budget);
   };
-  static updateById = async (req: Request<BudgetParams>, res: Response) => {
+  static updateById = async (req: Request, res: Response) => {
     await req.budget.update(req.body);
     res.json("Presupuesto actualizado correctamente.");
   };
-  static deleteById = async (req: Request<BudgetParams>, res: Response) => {
+  static deleteById = async (req: Request, res: Response) => {
     await req.budget.destroy();
     res.status(200).json("El presupuesto fue eliminado exitosamente.");
   };
