@@ -1,9 +1,9 @@
 import { createRequest, createResponse } from "node-mocks-http";
-import { budgets } from "../mocks/budget";
-import Budget from "../../models/Budget";
-import { BudgetController } from "../../controllers/BudgetControllers";
+import { budgets } from "../../mocks/budget";
+import Budget from "../../../models/Budget";
+import { BudgetController } from "../../../controllers/BudgetControllers";
 
-jest.mock("../../models/Budget", () => ({
+jest.mock("../../../models/Budget", () => ({
   findAll: jest.fn(),
   create: jest.fn(),
   findByPk: jest.fn(),
@@ -147,7 +147,7 @@ describe("BudgetsController.getById", () => {
     const res = createResponse();
     await BudgetController.getById(req, res);
     const data = res._getJSONData();
-
+    
     expect(res.statusCode).toBe(200);
     expect(data).toEqual(budgetTest);
   });
@@ -173,6 +173,7 @@ describe("BudgetController.updateById", () => {
     });
     const res = createResponse();
     await BudgetController.updateById(req, res);
+    expect(budgetTest.update).toHaveBeenCalledWith(req.body)
     expect(res.statusCode).toBe(200);
   });
 });
@@ -193,6 +194,7 @@ describe("BudgetController.deleteById", () => {
     });
     const res = createResponse()
     await BudgetController.deleteById(req, res)
+    expect(budgetTest.destroy).toHaveBeenCalled()
     expect(res.statusCode).toBe(200)
   })
 })

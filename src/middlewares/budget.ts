@@ -30,9 +30,7 @@ const validateExistBudget = async (
     if (!budget) {
       return res.status(404).json("No se encontro el presupuesto.");
     }
-    if (budget.userId !== req.User.id) {
-      return res.status(401).json("No se puede mostrar la información.");
-    }
+
     req.budget = budget;
     next();
   } catch (error) {
