@@ -16,16 +16,16 @@ export class AuthController {
         );
         return res.status(409).json({ error: error.message });
       }
-      const user = new User(req.body);
+      const user = await User.create(req.body);
       user.password = await hashData(password);
       user.token = CoreHelpers.getUUID();
+
       (await user.save()) && (await Email.sendMailWelcome(user));
 
       res.status(201).json("Usuario creado exitosamente.");
     } catch (error) {
-      console.log(error);
       const e = new Error("Hubo un error al crear el usuario.");
-      return res.status(409).json({ error: e.message });
+      return res.status(500).json({ error: e.message });
     }
   };
   static confirmAccount = async (req: Request, res: Response) => {
@@ -51,7 +51,7 @@ export class AuthController {
       const user = await User.findOne({ where: { email } });
       if (!user) {
         const error = new Error("Las credenciales ingresadas no son validas.");
-        return res.status(409).json({ error: error.message });
+        return res.status(404).json({ error: error.message });
       }
 
       if (!user.confirm) {
@@ -62,12 +62,11 @@ export class AuthController {
       const isPasswordCorrect = await checkPassword(password, user.password);
       if (!isPasswordCorrect) {
         const error = new Error("Las credenciales ingresadas no son validas.");
-        return res.status(403).json({ error: error.message });
+        return res.status(401).json({ error: error.message });
       }
       const token = generateJWT(user.id);
       res.json(token);
     } catch (error) {
-      console.log(error);
       const e = new Error("Hubo un error al realizar la autenticación.");
       return res.status(409).json({ error: e.message });
     }
@@ -91,7 +90,6 @@ export class AuthController {
       await Email.sendMailForgotPassword(user);
       res.json("El codigo de recuperacion fue enviado al correo.");
     } catch (error) {
-      console.log(error);
       const e = new Error("Hubo un error al realizar la autenticación.");
       return res.status(409).json({ error: e.message });
     }
@@ -163,8 +161,7 @@ export class AuthController {
         const error = new Error("No autorizado.");
         return res.status(401).json({ error: error.message });
       }
-      
-      
+
       res.json("Password correcto.");
     } catch (error) {
       const e = new Error("Error al actualizar el password.");

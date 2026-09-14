@@ -20,7 +20,6 @@ export class BudgetController {
       const budget = await Budget.create({ ...req.body, userId: req.User.id });
       res.status(201).json("Presupuesto creado correctamente");
     } catch (error) {
-      console.log(error);
       res
         .status(500)
         .json({ error: "Ocurrio un error al generar el presupuesto." });

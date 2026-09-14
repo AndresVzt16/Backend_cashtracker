@@ -34,7 +34,6 @@ const validateExistBudget = async (
     req.budget = budget;
     next();
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "No se pudo realizar la busqueda." });
   }
 };
