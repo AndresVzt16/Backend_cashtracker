@@ -1,5 +1,8 @@
-import colors from 'colors'
-import server from './server'
+require('dotenv').config()
+require('newrelic')
+
+const colors = require('colors')
+const server = require('./server').default
 
 const port = process.env.PORT || 4000
 
