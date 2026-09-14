@@ -6,8 +6,10 @@ const TypeIdValidation = async (
   req: Request,
   res: Response,
   next: NextFunction,
+  value: string,
+  name: string,
 ) => {
-  await isUiid(req);
+  await isUiid(req, name);
   hanldeValidation(req, res, next);
 };
 

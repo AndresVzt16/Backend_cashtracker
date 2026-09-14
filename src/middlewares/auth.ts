@@ -68,7 +68,6 @@ const authenticate = async (
       next();
     }
   } catch (error) {
-    console.log(error);
     const e = new Error("Token no valido");
     return res.status(500).json({ error: e.message });
   }

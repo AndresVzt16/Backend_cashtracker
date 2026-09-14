@@ -1,0 +1,5 @@
+◇ injected env (6) from .env // tip: ⌘ enable debugging { debug: true }
+◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+[36m[1mSERVIDOR INICIADO[22m[39m
+[36m[1mREST API iniciada en el puerto: 4000[22m[39m
+[34m[1mConexion exitosa a la BD[22m[39m
