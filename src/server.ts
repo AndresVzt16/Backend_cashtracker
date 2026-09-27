@@ -7,11 +7,10 @@ import expenseRouter from "./routes/expenseRoutes";
 import authRouter from './routes/authRoutes'
 
 //conexion a base de datos
-async function connectDB() {
+export async function connectDB() {
   try {
     await db.authenticate();
     db.sync();
-    console.log(colors.blue.bold("Conexion exitosa a la BD"));
   } catch (error) {
     console.log(
       colors.red.bold("Error al intentar conectarse a la Base de datos"),
@@ -32,6 +31,10 @@ app.use(express.json());
 app.use("/api/v1/budgets", budgetRouter);
 app.use("/api/v1/budgets", expenseRouter);
 app.use("/api/v1/auth", authRouter);
+app.get("/", (req, res) => {
+  res.send("Test OK")
+
+})
 
 
 export default app;

@@ -10,7 +10,7 @@ export const createAccount = [
     .withMessage("El password no puede estar vacio.")
     .bail()
     .isLength({
-      min: 6,
+      min: 8,
       max: 40,
     }),
 ];
