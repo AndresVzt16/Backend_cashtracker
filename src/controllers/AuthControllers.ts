@@ -18,7 +18,12 @@ export class AuthController {
       }
       const user = await User.create(req.body);
       user.password = await hashData(password);
-      user.token = CoreHelpers.getUUID();
+      const token = CoreHelpers.getUUID();
+      user.token = token;
+
+      if (process.env.NODE_ENV !== "production") {
+        globalThis.cashtrackerConfirmationToken = token;
+      }
 
       (await user.save()) && (await Email.sendMailWelcome(user));
 
@@ -34,8 +39,9 @@ export class AuthController {
       const user = await User.findOne({ where: { token } });
       if (!user) {
         const error = new Error("Token no valido");
-        return res.status(401).json({ error: error.message });
+        return res.status(409).json({ error: error.message });
       }
+
       user.confirm = true;
       user.token = null;
       await user.save();
